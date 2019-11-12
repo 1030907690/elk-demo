@@ -7,24 +7,41 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
 
 @SpringBootApplication
 @RestController
 public class ElkDemoApplication {
 
-	private final Logger logger = LoggerFactory.getLogger(ElkDemoApplication.class);
-	public static void main(String[] args) {
-	 new SpringApplicationBuilder(ElkDemoApplication.class)
-		 .bannerMode(Banner.Mode.OFF)
-		 .web(WebApplicationType.SERVLET)
-		 .run(args);
-	}
+    private final Logger logger = LoggerFactory.getLogger(ElkDemoApplication.class);
 
-	@RequestMapping("/log")
-	public String log(String text){
-		logger.info(text);
-		return "ok";
-	}
+    public static void main(String[] args) {
+        new SpringApplicationBuilder(ElkDemoApplication.class)
+                .bannerMode(Banner.Mode.OFF)
+                .web(WebApplicationType.SERVLET)
+                .run(args);
+    }
+
+    @RequestMapping("/log")
+    public String log( @RequestParam Map<String, String> params) {
+        SimpleDateFormat format0 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = format0.format(new Date());//
+        StringBuilder sb = new StringBuilder();
+        sb.append(time);
+        if (null != params) {
+            params.forEach((k, v) -> {
+                sb.append("#-#"+v);
+            });
+        }
+
+        logger.info(sb.toString());
+        return "ok";
+    }
 }
