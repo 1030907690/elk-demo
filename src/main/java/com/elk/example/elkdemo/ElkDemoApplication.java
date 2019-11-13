@@ -29,10 +29,14 @@ public class ElkDemoApplication {
                 .run(args);
     }
 
+    /***
+     * 第一个测试方法
+     *   <pattern>%d{HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n</pattern>
+     * */
     @RequestMapping("/log")
     public String log( @RequestParam Map<String, String> params) {
         SimpleDateFormat format0 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String time = format0.format(new Date());//
+        String time = format0.format(new Date());
         StringBuilder sb = new StringBuilder();
         sb.append(time);
         if (null != params) {
